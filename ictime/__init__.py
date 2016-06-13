@@ -16,6 +16,7 @@ import datetime
 import time
 import inspect
 import functools
+import pytz
 
 import dateutil
 import dateutil.parser
@@ -470,6 +471,10 @@ class Timestamp(namedtuple('Timestamp', 'unix_time calendar_name')):
         """
         until = self - self.calendar.now()
         return until if until.real_seconds >= 0 else None
+
+    @property
+    def rl_datetime(self):
+        return mudsling.utils.time.get_datetime(self.unix_time, tz=pytz.utc)
 
     def __str__(self):
         return self.calendar.format_datetime(self)
